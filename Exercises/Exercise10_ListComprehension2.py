@@ -21,6 +21,7 @@ print(randomListB)
 for i in randomListA:
     for j in randomListB:
         if(i == j):
-            listResult.append(i)
+            if(listResult.count(i)<1):
+                listResult.append(i)
 
 print (listResult)
