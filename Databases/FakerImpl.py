@@ -1,6 +1,7 @@
 from faker import Faker
 from Person import Person
 import random
+import sys
 
 class FakerImpl:
     # def __init__(self):
@@ -13,6 +14,12 @@ class FakerImpl:
     
     def createPersons(self, numberOfPersons):
         persons = []
+        ctr = 0
         for _ in range(numberOfPersons):
-            persons.append(self.createPerson())
+            ctr+=1
+            person = self.createPerson()
+            persons.append(person)
+            sys.stdout.write("\r%s\r" % "Person # {0}/{1} created.".format(ctr,numberOfPersons))
+            sys.stdout.flush()
+            
         return persons

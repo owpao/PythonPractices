@@ -1,5 +1,6 @@
 from FakerImpl import FakerImpl
 import sqlite3
+import sys
 
 
 class DBAccess:
@@ -9,7 +10,7 @@ class DBAccess:
 
     def main(self):
         fakerImpl = FakerImpl()
-        persons = fakerImpl.createPersons(100)
+        persons = fakerImpl.createPersons(200)
         for person in persons:
             self.insertToDb(person)
 
@@ -18,7 +19,8 @@ class DBAccess:
         with conn:
             cursor = conn.cursor()
             sql = "INSERT INTO Person(name, age, address, birthday) VALUES(?,?,?,?)"
-            cursor.execute(sql, (person.name, person.age, person.address, person.birthday))
+            cursor.execute(sql, (person.name, person.age,
+                                 person.address, person.birthday))
 
     def create_connection(self):
         try:
@@ -29,7 +31,17 @@ class DBAccess:
             print(e)
         return None
 
+    def retrieveDataFromDB(self):
+        conn = self.create_connection()
+        with conn:
+            cursor = conn.cursor()
+            sql = "SELECT * FROM PERSON"
+            cursor.execute(sql)
+            for row in cursor.fetchall():
+                print(row)
+
 
 if __name__ == "__main__":
     dbAccess = DBAccess()
-    dbAccess.main()
+    # dbAccess.main()
+    dbAccess.retrieveDataFromDB()
