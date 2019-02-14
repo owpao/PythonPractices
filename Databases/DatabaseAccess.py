@@ -1,7 +1,7 @@
 from FakerImpl import FakerImpl
 import sqlite3
 import sys
-
+from Person import Person
 
 class DBAccess:
 
@@ -37,11 +37,34 @@ class DBAccess:
             cursor = conn.cursor()
             sql = "SELECT * FROM PERSON"
             cursor.execute(sql)
-            for row in cursor.fetchall():
-                print(row)
+            return(cursor.fetchall())
+
+    def retrieveDataFromDBByID(self,id):
+        conn = self.create_connection()
+        with conn:
+            cursor = conn.cursor()
+            sql = "SELECT * FROM PERSON WHERE ID = ?"
+            cursor.execute(sql,id)
+            person = cursor.fetchone()
+            return person
+
+    def updateDataAgeById(self, id, age):
+        conn = self.create_connection()
+        with conn:
+            cursor = conn.cursor()
+            sql = '''UPDATE PERSON SET AGE = ? WHERE ID = ?'''
+            cursor.execute(sql,(age,id))
+        print("Age Updated!")
+
+    def deleteDataByLowerThanAge(self, age):
+        conn = self.create_connection()
+        with conn:
+            cursor = conn.cursor()
+            sql = '''DELETE FROM PERSON WHERE AGE < ?'''
+            cursor.execute(sql, (age,))
 
 
 if __name__ == "__main__":
     dbAccess = DBAccess()
     # dbAccess.main()
-    dbAccess.retrieveDataFromDB()
+    dbAccess.deleteDataByLowerThanAge("18")
