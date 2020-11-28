@@ -1,1 +1,3 @@
-import string_split
+from string_split import mama
+
+mama()
